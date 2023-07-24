@@ -1,0 +1,112 @@
+package com.example.libraryspringboot.controllers;
+
+import com.example.libraryspringboot.models.Book;
+import com.example.libraryspringboot.models.Person;
+import com.example.libraryspringboot.services.impl.BookServiceImpl;
+import com.example.libraryspringboot.services.impl.PersonServiceImpl;
+import com.example.libraryspringboot.utils.BookValidator;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+
+import java.sql.SQLException;
+import java.util.List;
+
+@Controller
+@RequestMapping("/books") // все сслылки будут начинаться с пипл
+public class BooksController {
+    private final BookServiceImpl bookService;
+    private final PersonServiceImpl personService;
+    private  final BookValidator bookValidator;
+    @Autowired
+    public BooksController(BookServiceImpl bookService, PersonServiceImpl personService, BookValidator bookValidator) {
+        this.bookService = bookService;
+        this.personService = personService;
+        this.bookValidator = bookValidator;
+    }
+
+    @GetMapping()// пустой, т.к. уже есть /пипл
+    public String index(Model model) throws SQLException { // в моделе будем передавать
+        //получим всех людей из дао и передадим на отображение в вивью
+        model.addAttribute("books", bookService.findAll()); //под ключем пипл лежит список людей
+        return "books/index";//возвращаем страницу, отображающую список из людей
+    }
+
+    @GetMapping("/{id}") // в адресе передается число, которое поместиться в аргументы метода с пом анн ПасВариабл
+    public String show(@PathVariable("id") int id, Model model) {
+        //получим одного человека по айди из дао и передадим его на отображение в представление
+        Book book = bookService.findById(id);
+        model.addAttribute("book", book); //под этим ключем лежит человек по айди
+        model.addAttribute("person", book.getPerson());
+        model.addAttribute("people", personService.findAll());
+        return "books/show"; // возвращаем страницу с 1 человеком по айди
+    }
+
+    @GetMapping("/new")
+    public String newPerson(@ModelAttribute("book") Book book) {
+        return "books/new";
+    }
+
+    @PostMapping()//попадаем в метод по адресу /пипл
+    public String create(@ModelAttribute("book") @Valid Book book,
+                         BindingResult bindingResult) {
+        bookValidator.validate(book,bindingResult); // в полях передаем персон
+        //из формы и bindingResult, где храняться ошибки со всех валидаций
+
+        if (bindingResult.hasErrors())//если есть ошибки
+            return "books/new";
+        bookService.save(book);
+        return "redirect:/books";//переход на другую страницу после добавления человека
+    }
+
+    @GetMapping("/{id}/edit")
+    public String edit(Model model, @PathVariable("id") int id) {
+        model.addAttribute("book", bookService.findById(id));
+        return "books/edit";
+    }
+
+    @GetMapping("/{id}/unsubscribe")
+    public String unsubscribe(Model model, @PathVariable("id") int id) {
+        bookService.unsubscribe(id);
+        model.addAttribute("book", bookService.findById(id));
+        return "books/show";
+    }
+
+    @PatchMapping("/{id}")
+    public String update(@ModelAttribute("book") @Valid Book book,
+                         BindingResult bindingResult, @PathVariable("id") int id) {
+
+
+        if (bindingResult.hasErrors())//если есть ошибки
+            return "books/edit";
+        bookService.update(id, book);
+        return "redirect:/books";
+    }
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") int id) {
+        bookService.delete(id);
+        return "redirect:/books";
+
+    }
+
+//    @GetMapping("/{id}/take")
+//    public String showTakeBookForm(@PathVariable("id") int id,
+//                                   Model model) {
+//        List<Person> people = personService.findAll();
+//        model.addAttribute("people", people); // Передаем список читателей в модель
+//
+//        return "books/show"; // Возвращаем имя представления с формой
+//    }
+
+    @PatchMapping("/{id}/take")
+    public String takeBook(@PathVariable("id") int id,
+                           @ModelAttribute("person") Person person) {
+        bookService.findById(id).setPerson(person);// Ваш код обработки сохранения информации о читателе для книги
+        return "redirect:/books/" + id; // Возвращаем URL для редиректа после сохранения
+    }
+}
