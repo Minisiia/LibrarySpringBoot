@@ -21,7 +21,8 @@ import java.util.List;
 public class BooksController {
     private final BookServiceImpl bookService;
     private final PersonServiceImpl personService;
-    private  final BookValidator bookValidator;
+    private final BookValidator bookValidator;
+
     @Autowired
     public BooksController(BookServiceImpl bookService, PersonServiceImpl personService, BookValidator bookValidator) {
         this.bookService = bookService;
@@ -37,12 +38,17 @@ public class BooksController {
     }
 
     @GetMapping("/{id}") // в адресе передается число, которое поместиться в аргументы метода с пом анн ПасВариабл
-    public String show(@PathVariable("id") int id, Model model) {
+    public String show(@PathVariable("id") int id, Model model,
+                       @ModelAttribute("person") Person person) {
         //получим одного человека по айди из дао и передадим его на отображение в представление
         Book book = bookService.findById(id);
         model.addAttribute("book", book); //под этим ключем лежит человек по айди
-        model.addAttribute("person", book.getPerson());
-        model.addAttribute("people", personService.findAll());
+
+        if (book.getPerson() != null) {
+            model.addAttribute("reader", book.getPerson());
+        } else {
+            model.addAttribute("people", personService.findAll());
+        }
         return "books/show"; // возвращаем страницу с 1 человеком по айди
     }
 
@@ -54,7 +60,7 @@ public class BooksController {
     @PostMapping()//попадаем в метод по адресу /пипл
     public String create(@ModelAttribute("book") @Valid Book book,
                          BindingResult bindingResult) {
-        bookValidator.validate(book,bindingResult); // в полях передаем персон
+        bookValidator.validate(book, bindingResult); // в полях передаем персон
         //из формы и bindingResult, где храняться ошибки со всех валидаций
 
         if (bindingResult.hasErrors())//если есть ошибки
@@ -69,12 +75,6 @@ public class BooksController {
         return "books/edit";
     }
 
-    @GetMapping("/{id}/unsubscribe")
-    public String unsubscribe(Model model, @PathVariable("id") int id) {
-        bookService.unsubscribe(id);
-        model.addAttribute("book", bookService.findById(id));
-        return "books/show";
-    }
 
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("book") @Valid Book book,
@@ -103,10 +103,25 @@ public class BooksController {
 //        return "books/show"; // Возвращаем имя представления с формой
 //    }
 
-    @PatchMapping("/{id}/take")
+    @PatchMapping("/{id}/unsubscribe")
+    public String unsubscribe(Model model, @PathVariable("id") int id) {
+        bookService.unsubscribe(id);
+        model.addAttribute("book", bookService.findById(id));
+        return "redirect:/books/" + id;
+    }
+
+    @PatchMapping("/{id}/unsubscribe-from-person-page")
+    public String unsubscribeFromPersonPage(Model model, @PathVariable("id") int id) {
+        int personId = bookService.findById(id).getPerson().getId();
+        bookService.unsubscribe(id);
+        model.addAttribute("book", bookService.findById(id));
+        return "redirect:/people/" + personId;
+    }
+
+    @PatchMapping("/{id}/subscribe")
     public String takeBook(@PathVariable("id") int id,
                            @ModelAttribute("person") Person person) {
-        bookService.findById(id).setPerson(person);// Ваш код обработки сохранения информации о читателе для книги
+        bookService.subscribe(id,person);// Ваш код обработки сохранения информации о читателе для книги
         return "redirect:/books/" + id; // Возвращаем URL для редиректа после сохранения
     }
 }

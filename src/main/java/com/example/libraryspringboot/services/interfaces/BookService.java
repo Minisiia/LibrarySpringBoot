@@ -1,6 +1,7 @@
 package com.example.libraryspringboot.services.interfaces;
 
 import com.example.libraryspringboot.models.Book;
+import com.example.libraryspringboot.models.Person;
 import com.example.libraryspringboot.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,4 +19,6 @@ public interface BookService {
     void delete (int id) ;
 
     void unsubscribe(int id);
+
+    void subscribe(int id, Person person);
 }

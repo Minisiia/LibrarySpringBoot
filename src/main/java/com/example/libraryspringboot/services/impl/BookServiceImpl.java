@@ -49,4 +49,11 @@ public class BookServiceImpl {
         book.setPerson(null);
         bookRepository.save(book);
     }
+
+    public void subscribe(int id,Person person) {
+        Book book = bookRepository.findById(id).orElse(null);
+        assert book != null;
+        book.setPerson(person);
+        bookRepository.save(book);
+    }
 }

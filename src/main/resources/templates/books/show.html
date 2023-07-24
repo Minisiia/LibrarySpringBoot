@@ -5,37 +5,46 @@
     <title>Person</title>
 </head>
 <body>
-
-<p th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYear()}">value</p>
-
-<div th:if="${person == null}">
-    <p>Книга не взята</p>
+<h4>Book Info</h4>
+<div id="book-info">
+    <p th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYear()}">value</p>
+</div>
+<hr/>
+<h4>Book State</h4>
+<div th:if="${people}">
+    <p>Book not taken</p>
     <br/>
-    <form th:method="Patch" th:action="@{/books/{id}/take(id=${book.getId()})}" >
-        <label for="personList">Выберите читателя:</label>
-        <select th:object="${person}" th:field="*{id}" id="personList">
+    <form th:method="PATCH" th:action="@{/books/{id}/subscribe(id=${book.getId()})}">
+        <label for="person">Choose a reader:</label>
+        <select th:object="${person}" th:field="*{id}" id="person">
             <option th:each="person : ${people}" th:value="${person.getId()}"
                     th:text="${person.getName()}"></option>
         </select>
 
-        <input type="submit" value="Взять книгу"/>
+        <input type="submit" value="Subscribe"/>
     </form>
 </div>
-<div th:if="${person != null}">
-    <p th:text="${person.getName() + ', ' +person.getYear()}"> value</p>
-    <form th:method="GET" th:action="@{/books/{id}/unsubscribe(id=${book.getId()})}">
+<div th:if="${reader}">
+    <span>The book is taken by </span>
+    <a th:href="@{'/people/' + ${reader.getId()}}">
+        <span th:text="${reader.getName() + ', ' +reader.getYear()}"> value</span>
+    </a>
+    <form th:method="PATCH" th:action="@{/books/{id}/unsubscribe(id=${book.getId()})}" style="display: inline; margin-left: 5px;">
         <input type="submit" value="Unsubscribe"/>
     </form>
+
 </div>
 
 <hr/>
 <br/>
-<form th:method="GET" th:action="@{/books/{id}/edit(id=${book.getId()})}">
+<form th:method="GET" th:action="@{/books/{id}/edit(id=${book.getId()})}" style="display: inline;">
     <input type="submit" value="Edit"/>
 </form>
-<br/>
-<form th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()})}">
+
+<form th:method="DELETE" th:action="@{/books/{id}(id=${book.getId()})}" style="display: inline; margin-left: 5px;">
     <input type="submit" value="Delete"/>
 </form>
+<br/>
+<p><a href="/index.html">Home</a></p>
 </body>
 </html>

@@ -30,8 +30,8 @@ INSERT INTO person (id, name, year) VALUES
 
 -- Добавление книг и привязка их к человеку по person_id
 INSERT INTO book (id, title, author, year, person_id) VALUES
-                                                          (101, 'Book One', 'Author One', 2000, 1),
-                                                          (102, 'Book Two', 'Author Two', 2010, 1),
+                                                          (101, 'Book', 'Jane One', 2000, 1),
+                                                          (102, 'Two', 'Scott Two', 2010, 1),
                                                           (103, 'The Book of Secrets', 'John Doe', 2005, 2),
                                                           (104, 'The Power of Now', 'Eckhart Tolle', 1997, 2),
                                                           (105, 'Harry Potter and the Sorcerer\'s Stone', 'J.K. Rowling', 1997, 2),
