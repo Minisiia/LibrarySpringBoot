@@ -3,47 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <title>Person</title>
+    <link rel="stylesheet" type="text/css" href="/styles/style.css">
 </head>
 <body>
-<h4>Reader Info</h4>
-<div>
-<p th:text="${person.getName() + ', '+person.getYear()}">value</p>
-</div>
-<hr/>
-<h4>Books Info</h4>
-<div th:if="${#lists.isEmpty(books)}">
-    <p>No books</p>
-</div>
-<div th:if="${not #lists.isEmpty(books)}">
-    <p>List of books:</p>
-    <ol>
-        <div th:each="book : ${books}">
-            <li>
-                <a th:href="@{'/books/' + ${book.getId()}}">
-                    <span th:text="${book.getTitle() + ', ' + book.getAuthor() + ', ' + book.getYear()}"></span>
-                </a>
-                <form th:method="PATCH" th:action="@{/books/{id}/unsubscribe-from-person-page(id=${book.getId()})}" style="display: inline; margin-left: 5px;">
-                    <input type="submit" value="Unsubscribe"/>
-                </form>
-            </li>
+<div id="container">
+    <div id="header">
+        <div class="home-link">
+            <a href='/index.html'class="button-link">Home</a>
         </div>
-    </ol>
+        <h1>Spring Boot Library</h1>
+    </div>
+    <div id="readers-info">
+        <table>
+            <h3>Reader Info</h3>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Year of Birth</th>
+                <th></th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td th:text="${person.getId()}">1</td>
+                <td th:text="${person.getName()}">Name</td>
+                <td th:text="${person.getYear()}">1990</td>
+                <td>
+                    <div class="edit">
+                        <form th:method="GET" th:action="@{/people/{id}/edit(id=${person.getId()})}" style="display: inline;">
+                            <button type="submit" class="button-link">Edit</button>
+                        </form>
+                    </div>
+                    <div class="delete">
+                        <form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}" style="display: inline; margin-left: 5px;">
+                            <button type="submit" class="button-link">Delete</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="books-info">
+        <h3>Books Info</h3>
+        <div th:if="${#lists.isEmpty(books)}">
+            <p>No books</p>
+        </div>
+        <div th:if="${not #lists.isEmpty(books)}">
+            <table>
+                <thead>
+                <tr>
+                    <th>Author</th>
+                    <th>Author</th>
+                    <th>Publish Year</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="book : ${books}">
+                    <td th:text="${book.getAuthor()}">Author</td>
+                    <td th:text="${book.getTitle()}">Title</td>
+                    <td th:text="${book.getYear()}">Year</td>
+                    <td>
+                        <div class="details">
+                            <a th:href="@{'/books/' + ${book.getId()}}" class="button-link">Details</a>
+                        </div>
+                        <div class="unsubscribe">
+                            <form th:method="PATCH" th:action="@{/books/{id}/unsubscribe-from-person-page(id=${book.getId()})}" style="display: inline; margin-left: 5px;">
+                                <button type="submit" class="button-link">Unsubscribe</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
-</div>
 
-
-<hr/>
-
-<form th:method="GET" th:action="@{/people/{id}/edit(id=${person.getId()})}" style="display: inline;">
-    <input type="submit" value="Edit"/>
-</form>
-
-<form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}" style="display: inline; margin-left: 5px;">
-    <input type="submit" value="Delete"/>
-</form>
-
-<br/>
-<p><a href="/index.html">Home</a></p>
 </body>
 </html>

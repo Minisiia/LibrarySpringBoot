@@ -3,19 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <title>All persons</title>
+    <link rel="stylesheet" type="text/css" href="/styles/style.css">
 </head>
 <body>
+<div id="container">
+    <div id="header">
+        <div class="home-link">
+            <a href='/index.html' class="button-link">Home</a>
+        </div>
+        <h1>Spring Boot Library</h1>
+    </div>
+    <div id="readers-table">
+        <table>
+            <h3>All Readers</h3>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Year of Birth</th>
 
-<div th:each="person : ${people}">
-    <a th:href="@{/people/{id}(id=${person.getId()})}"
-       th:utext="${person.getName() + ', ' + person.getYear()}">user</a>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="person : ${people}" class="person">
+                <td th:text="${person.getId()}">1</td>
+                <td>
+                    <a th:href="@{/people/{id}(id=${person.getId()})}" th:text="${person.getName()}">user</a>
+                </td>
+                <td th:text="${person.getYear()}">1990</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+<div class="create">
+    <a href='/people/new' class="button-link">Create new person</a>
 </div>
 
-<br/>
-<hr/>
-<a href="/people/new">Create new person</a>
 
-<br/>
-<a href="/index.html">Home</a>
+</div>
 </body>
 </html>

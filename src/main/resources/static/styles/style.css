@@ -1,0 +1,131 @@
+
+body, html {
+    background-color: #b8e3ee;
+    text-align: center;
+    height: 100%;
+}
+
+#container {
+    background-color: #FFFFFF;
+    width: 980px;
+    margin: 0 auto;
+    padding: 5px;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+    line-height: 18px;
+    text-align: left;
+    height: 100%;
+}
+
+#readers-info {
+    text-align: center;
+}
+
+
+h1, h3 {
+    text-align: center;
+    padding: 5px 5px;
+}
+
+table, ol {
+    width: 100%;
+    margin: 20px auto;
+    border-collapse: collapse;
+}
+
+th, td, li {
+    border: 1px solid lightblue;
+    padding: 8px;
+    margin: 5px auto;
+    text-align: left;
+}
+
+.edit,
+.delete,
+.subscribe,
+.unsubscribe,
+.details {
+    display: inline;
+}
+
+.home-link,
+.create {
+    margin-top: 10px;
+}
+
+/* Общий стиль кнопки */
+.button-link {
+    background-color: #56c7e8;
+    color: white;
+    border: 2px solid #56c7e8;
+    padding: 6px 16px;
+    font-size: 14px;
+    cursor: pointer; /* При наведении курсор меняется на указатель */
+    border-radius: 5px;
+    text-decoration-line: none;
+
+}
+
+/* Стиль при наведении */
+.button-link:hover {
+    background-color: #1ea9ff;
+    border-color: #1ea9ff;
+    color: white;
+    text-decoration-line: none;
+}
+
+/* Стиль при нажатии */
+.button-link:active {
+    background-color: deepskyblue;
+    border-color: deepskyblue;
+    color: white;
+    text-decoration-line: none;
+}
+
+.button-link:visited,
+.button-link:link {
+    color: white;
+    text-decoration-line: none;
+}
+
+
+/* Стиль для ненажатых (не посещенных) ссылок */
+a:link {
+    color: dodgerblue; /* Цвет текста для ненажатых ссылок */
+
+}
+
+/* Стиль для нажатых (посещенных) ссылок */
+a:visited {
+    color: darkblue; /* Цвет текста для нажатых ссылок */
+
+}
+
+/* Стили для формы */
+form {
+    width: 400px; /* Ширина формы (можете установить нужное значение) */
+    margin: 0 auto; /* Размещение формы по центру */
+}
+
+/* Стили для названий полей */
+form label {
+    display: block;
+    margin-bottom: 5px; /* Расстояние между названием и полем ввода */
+    font-weight: bold; /* Жирное начертание для названий полей */
+}
+
+/* Стили для каждого элемента формы */
+form input {
+    display: block;
+    width: 100%; /* Ширина элементов формы на 100% контейнера (формы) */
+    margin-bottom: 15px; /* Расстояние между элементами */
+    padding: 10px; /* Внутренний отступ для полей ввода */
+    font-size: 16px; /* Размер шрифта */
+    border: 1px solid #ccc; /* Граница для полей ввода */
+    border-radius: 5px; /* Скругление углов */
+}
+
+/* Стили для ошибок */
+form div {
+    color: darkred;
+}

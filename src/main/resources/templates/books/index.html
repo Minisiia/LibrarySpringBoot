@@ -3,18 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <title>All books</title>
+    <link rel="stylesheet" type="text/css" href="/styles/style.css">
 </head>
 <body>
+<div id="container">
+    <div id="header">
+        <div class="home-link">
+            <a href='/index.html' class="button-link">Home</a>
+        </div>
+        <h1>Spring Boot Library</h1>
+    </div>
+    <div id="books-info">
+        <table>
+            <h3>All books</h3>
+            <thead>
+            <tr>
+                <th>Author</th>
+                <th>Title</th>
+                <th>Publish Year</th>
+                <th></th>
 
-<div th:each="book : ${books}">
-    <a th:href="@{/books/{id}(id=${book.getId()})}"
-       th:text="${book.getAuthor() + ', ' + book.getTitle()}">book</a>
+            </tr>
+            <tbody>
+            <tr th:each="book : ${books}">
+                <td th:text="${book.getAuthor()}">Author</td>
+                <td th:text="${book.getTitle()}">Title</td>
+                <td th:text="${book.getYear()}">Year</td>
+                <td>
+                    <div class="details">
+                        <a th:href="@{'/books/' + ${book.getId()}}" class="button-link">Details</a>
+                    </div>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+<div class="create">
+    <a href='/books/new' class="button-link">Create new book</a>
 </div>
-
-<br/>
-<hr/>
-<a href="/books/new">Create new book</a>
-<br/>
-<a href="/index.html">Home</a>
+</div>
 </body>
 </html>
