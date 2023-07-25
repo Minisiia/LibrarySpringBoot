@@ -44,13 +44,18 @@ th, td, li {
 .delete,
 .subscribe,
 .unsubscribe,
-.details {
+.details,
+.all-books,
+.all-readers,
+.home-link {
     display: inline;
 }
 
 .home-link,
-.create {
-    margin-top: 10px;
+.create,
+.all-books,
+.all-readers{
+    margin-top: 30px;
 }
 
 /* Общий стиль кнопки */
@@ -128,4 +133,9 @@ form input {
 /* Стили для ошибок */
 form div {
     color: darkred;
+}
+
+img {
+    width: 16px;
+    height: 16px;
 }

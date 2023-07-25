@@ -21,4 +21,8 @@ public interface BookService {
     void unsubscribe(int id);
 
     void subscribe(int id, Person person);
+
+    void takeBook(Book book);
+
+    void returnBook(Book book);
 }

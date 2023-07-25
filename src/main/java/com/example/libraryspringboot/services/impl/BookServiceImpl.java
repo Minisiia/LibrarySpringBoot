@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,6 +49,7 @@ public class BookServiceImpl {
         assert book != null;
         book.setPerson(null);
         bookRepository.save(book);
+        returnBook(book);
     }
 
     public void subscribe(int id,Person person) {
@@ -55,5 +57,14 @@ public class BookServiceImpl {
         assert book != null;
         book.setPerson(person);
         bookRepository.save(book);
+        takeBook(book);
+    }
+
+    private void takeBook(Book book) {
+        book.setTakenAt(LocalDateTime.now());
+    }
+
+    private void returnBook(Book book) {
+        book.setReturnedAt(LocalDateTime.now());
     }
 }

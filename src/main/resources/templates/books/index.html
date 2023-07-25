@@ -18,6 +18,7 @@
             <h3>All books</h3>
             <thead>
             <tr>
+                <th></th>
                 <th>Author</th>
                 <th>Title</th>
                 <th>Publish Year</th>
@@ -26,6 +27,10 @@
             </tr>
             <tbody>
             <tr th:each="book : ${books}">
+                <td>
+                    <div th:if="${book.getPerson() == null}"><img src="/img/checkmark.png" alt="Free"></div>
+                    <div th:if="${book.getPerson() != null}"><img src="/img/cross.png" alt="Occupied"></div>
+                </td>
                 <td th:text="${book.getAuthor()}">Author</td>
                 <td th:text="${book.getTitle()}">Title</td>
                 <td th:text="${book.getYear()}">Year</td>
