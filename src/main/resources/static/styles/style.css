@@ -27,13 +27,13 @@ h1, h3 {
     padding: 5px 5px;
 }
 
-table, ol {
+table {
     width: 100%;
     margin: 20px auto;
     border-collapse: collapse;
 }
 
-th, td, li {
+th, td {
     border: 1px solid lightblue;
     padding: 8px;
     margin: 5px auto;
@@ -138,4 +138,20 @@ form div {
 img {
     width: 16px;
     height: 16px;
+}
+
+#navigation ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+
+#navigation li {
+    margin-right: 10px; /* Расстояние между элементами */
+}
+
+#navigation li:last-child {
+    margin-right: 0; /* Убираем правый margin у последнего элемента */
 }

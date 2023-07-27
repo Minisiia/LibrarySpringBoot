@@ -64,6 +64,21 @@
             </tr>
             </tbody>
         </table>
+        <!-- Навигация по страницам -->
+        <div id="navigation">
+            <ul>
+                <!-- Кнопка "Предыдущая страница" -->
+                <li th:unless="${currentPage == 0}">
+                    <a th:href="@{/books(page=${currentPage - 1},books-per-page=${booksPerPage})}">Предыдущая</a>
+                </li>
+                <li th:text="${currentPage} + 1">1
+                </li>
+                <!-- Кнопка "Следующая страница" -->
+                <li th:unless="${currentPage == totalPages - 1}">
+                    <a th:href="@{/books(page=${currentPage + 1},books-per-page=${booksPerPage})}">Следующая</a>
+                </li>
+            </ul>
+        </div>
     </div>
     <div class="create">
         <a href='/books/new' class="button-link">Create new book</a>

@@ -31,4 +31,6 @@ public interface BookService {
 
     Page<Book> getSortesBooksPerPage(int pageNumber, int pageSize, String sortBy);
     Page<Book> getDescSortesBooksPerPage(int pageNumber, int pageSize, String sortBy);
+
+    int getTotalBooksCount();
 }

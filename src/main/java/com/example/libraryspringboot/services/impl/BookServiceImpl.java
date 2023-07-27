@@ -97,4 +97,8 @@ public class BookServiceImpl implements BookService {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC,sortBy));
         return bookRepository.findAll(pageable);
     }
+
+    public int getTotalBooksCount() {
+        return bookRepository.findAll().size();
+    }
 }

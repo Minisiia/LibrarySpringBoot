@@ -54,6 +54,13 @@ public class BooksController {
         model.addAttribute("httpServletRequestPaging", request);
         model.addAttribute("link_builder",buildLink(request));
 
+        int totalPages = getTotalPages(booksPerPage);
+
+
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("booksPerPage", booksPerPage);
+
         //получим всех людей из дао и передадим на отображение в вивью
         if (page != null && booksPerPage != null) {
             if (sortBy == null) {
@@ -74,6 +81,8 @@ public class BooksController {
         }
         return "books/index";//возвращаем страницу, отображающую список из людей
     }
+
+
 
 
     @GetMapping("/{id}") // в адресе передается число, которое поместиться в аргументы метода с пом анн ПасВариабл
@@ -197,6 +206,12 @@ public class BooksController {
         return linkBuilder.toString();
     }
 
-
+    private int getTotalPages(Integer booksPerPage) {
+        int totalBooks = bookService.getTotalBooksCount();
+        int totalPages = 0;
+        if (booksPerPage != null) totalPages = (int) Math.ceil((double) totalBooks / booksPerPage);
+        else totalPages = 1;
+        return totalPages;
+    }
 
 }
