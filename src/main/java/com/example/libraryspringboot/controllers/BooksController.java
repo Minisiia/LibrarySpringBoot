@@ -6,9 +6,11 @@ import com.example.libraryspringboot.models.Person;
 import com.example.libraryspringboot.services.impl.BookServiceImpl;
 import com.example.libraryspringboot.services.impl.PersonServiceImpl;
 import com.example.libraryspringboot.utils.BookValidator;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.SortedMap;
 import java.util.stream.Collectors;
 
@@ -45,31 +48,30 @@ public class BooksController {
                         @RequestParam(required = false) Integer page,
                         @RequestParam(required = false, name = "books-per-page") Integer booksPerPage,
                         @RequestParam(required = false) String sortBy,
-                        @RequestParam(required = false) boolean isDesc) throws SQLException { // в моделе будем передавать
+                        @RequestParam(required = false) boolean isDesc,
+                        HttpServletRequest request) throws SQLException {
+
+        model.addAttribute("httpServletRequestPaging", request);
+        model.addAttribute("link_builder",buildLink(request));
+
         //получим всех людей из дао и передадим на отображение в вивью
-        if (page != null && booksPerPage != null && sortBy == null) {
-            model.addAttribute("books", bookService.getNBooksPerPage(page, booksPerPage).stream()
-                    .map(this::convertToBookDto)
-                    .collect(Collectors.toList()));
-        } else if (page != null && booksPerPage != null) {
-            model.addAttribute("books", bookService.getSortesBooksPerPage(page, booksPerPage, sortBy).stream()
-                    .map(this::convertToBookDto)
-                    .collect(Collectors.toList()));
-        } else if (page == null && booksPerPage == null && sortBy != null && isDesc) {
-            model.addAttribute("books", bookService.getDescSortedBooks(sortBy).stream()
-                    .map(this::convertToBookDto)
-                    .collect(Collectors.toList()));
+        if (page != null && booksPerPage != null) {
+            if (sortBy == null) {
+                model.addAttribute("books", convertToBookDtoPage(bookService.getNBooksPerPage(page, booksPerPage)));
+            } else if (isDesc) {
+                model.addAttribute("books", convertToBookDtoPage(bookService.getDescSortesBooksPerPage(page, booksPerPage, sortBy)));
+            } else {
+                model.addAttribute("books", convertToBookDtoPage(bookService.getSortesBooksPerPage(page, booksPerPage, sortBy)));
+            }
         } else if (page == null && booksPerPage == null && sortBy != null) {
-            model.addAttribute("books", bookService.getSortedBooks(sortBy).stream()
-                    .map(this::convertToBookDto)
-                    .collect(Collectors.toList()));
+            if (isDesc) {
+                model.addAttribute("books", convertToBookDtoList(bookService.getDescSortedBooks(sortBy)));
+            } else {
+                model.addAttribute("books", convertToBookDtoList(bookService.getSortedBooks(sortBy)));
+            }
         } else {
-            model.addAttribute("books", bookService.findAll().stream()
-                    .map(this::convertToBookDto)
-                    .collect(Collectors.toList()));
+            model.addAttribute("books", convertToBookDtoList(bookService.findAll()));
         }
-
-
         return "books/index";//возвращаем страницу, отображающую список из людей
     }
 
@@ -131,15 +133,6 @@ public class BooksController {
 
     }
 
-//    @GetMapping("/{id}/take")
-//    public String showTakeBookForm(@PathVariable("id") int id,
-//                                   Model model) {
-//        List<Person> people = personService.findAll();
-//        model.addAttribute("people", people); // Передаем список читателей в модель
-//
-//        return "books/show"; // Возвращаем имя представления с формой
-//    }
-
     @PatchMapping("/{id}/unsubscribe")
     public String unsubscribe(Model model, @PathVariable("id") int id) {
         bookService.unsubscribe(id);
@@ -169,5 +162,41 @@ public class BooksController {
     private BookDto convertToBookDto(Book book) {
         return modelMapper.map(book, BookDto.class);
     }
+
+    private List<BookDto> convertToBookDtoList(List<Book> books) {
+        return books.stream()
+                .map(this::convertToBookDto)
+                .collect(Collectors.toList());
+    }
+
+    private List<BookDto> convertToBookDtoPage(Page<Book> books) {
+        return books.stream()
+                .map(this::convertToBookDto)
+                .collect(Collectors.toList());
+    }
+
+    private String buildLink(HttpServletRequest request) {
+        String requestURI = request.getRequestURI();
+        String queryString = request.getQueryString();
+
+        StringBuilder linkBuilder = new StringBuilder(requestURI);
+
+        if (queryString != null && !queryString.isEmpty()) {
+            // Проверяем наличие параметра sortBy в queryString
+            int sortByIndex = queryString.indexOf("sortBy");
+            if (sortByIndex == 0) linkBuilder.append("?");
+            else if (sortByIndex != -1) {
+                queryString= queryString.substring(0, sortByIndex-1);
+                linkBuilder.append("?").append(queryString).append("&");
+            }
+            else linkBuilder.append("?").append(queryString).append("&");
+        } else linkBuilder.append("?");
+
+        System.out.println(linkBuilder.toString());
+        // Возвращаем сформированную ссылку
+        return linkBuilder.toString();
+    }
+
+
 
 }

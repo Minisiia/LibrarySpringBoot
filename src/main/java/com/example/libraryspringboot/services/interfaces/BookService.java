@@ -30,4 +30,5 @@ public interface BookService {
     List<Book> getSortedBooks(String sortBy);
 
     Page<Book> getSortesBooksPerPage(int pageNumber, int pageSize, String sortBy);
+    Page<Book> getDescSortesBooksPerPage(int pageNumber, int pageSize, String sortBy);
 }

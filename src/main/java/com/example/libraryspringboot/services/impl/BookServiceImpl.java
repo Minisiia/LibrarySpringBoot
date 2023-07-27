@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -89,6 +90,11 @@ public class BookServiceImpl implements BookService {
 
     public Page<Book> getSortesBooksPerPage(int pageNumber, int pageSize, String sortBy) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+        return bookRepository.findAll(pageable);
+    }
+
+    public Page<Book> getDescSortesBooksPerPage(int pageNumber, int pageSize, String sortBy) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC,sortBy));
         return bookRepository.findAll(pageable);
     }
 }
