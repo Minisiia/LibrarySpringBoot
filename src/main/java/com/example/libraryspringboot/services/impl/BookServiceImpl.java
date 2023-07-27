@@ -4,7 +4,12 @@ import com.example.libraryspringboot.models.Book;
 import com.example.libraryspringboot.models.Person;
 import com.example.libraryspringboot.repositories.BookRepository;
 import com.example.libraryspringboot.repositories.PersonRepository;
+import com.example.libraryspringboot.services.interfaces.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,8 +19,9 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class BookServiceImpl {
+public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
+
     @Autowired
     public BookServiceImpl(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
@@ -34,13 +40,13 @@ public class BookServiceImpl {
         return bookRepository.save(book);
     }
 
-    public Book update (int id, Book updatedBook) {
+    public Book update(int id, Book updatedBook) {
         Book book = bookRepository.findById(id).orElseThrow();
         updatedBook.setId(book.getId());
         return bookRepository.save(updatedBook);
     }
 
-    public void delete (int id) {
+    public void delete(int id) {
         bookRepository.deleteById(id);
     }
 
@@ -52,7 +58,7 @@ public class BookServiceImpl {
         returnBook(book);
     }
 
-    public void subscribe(int id,Person person) {
+    public void subscribe(int id, Person person) {
         Book book = bookRepository.findById(id).orElse(null);
         assert book != null;
         book.setPerson(person);
@@ -66,5 +72,23 @@ public class BookServiceImpl {
 
     private void returnBook(Book book) {
         book.setReturnedAt(LocalDateTime.now());
+    }
+
+    public Page<Book> getNBooksPerPage(int pageNumber, int pageSize) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize);
+        return bookRepository.findAll(pageable);
+    }
+
+    public List<Book> getSortedBooks(String sortBy) {
+        return bookRepository.findAll(Sort.by(sortBy));
+    }
+
+    public List<Book> getDescSortedBooks(String sortBy) {
+        return bookRepository.findAll(Sort.by(Sort.Direction.DESC,sortBy));
+    }
+
+    public Page<Book> getSortesBooksPerPage(int pageNumber, int pageSize, String sortBy) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortBy));
+        return bookRepository.findAll(pageable);
     }
 }

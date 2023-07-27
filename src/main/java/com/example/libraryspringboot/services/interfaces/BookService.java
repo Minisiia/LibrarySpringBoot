@@ -4,6 +4,8 @@ import com.example.libraryspringboot.models.Book;
 import com.example.libraryspringboot.models.Person;
 import com.example.libraryspringboot.repositories.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 
 import java.util.List;
 
@@ -22,7 +24,10 @@ public interface BookService {
 
     void subscribe(int id, Person person);
 
-    void takeBook(Book book);
 
-    void returnBook(Book book);
+    Page<Book> getNBooksPerPage(int pageNumber, int pageSize);
+
+    List<Book> getSortedBooks(String sortBy);
+
+    Page<Book> getSortesBooksPerPage(int pageNumber, int pageSize, String sortBy);
 }

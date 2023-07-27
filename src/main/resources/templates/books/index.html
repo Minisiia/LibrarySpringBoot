@@ -19,9 +19,18 @@
             <thead>
             <tr>
                 <th></th>
-                <th>Author</th>
-                <th>Title</th>
-                <th>Publish Year</th>
+                <th><span>Author</span>
+                    <a href='/books?sortBy=author'><img src="/img/arrow.png" alt="desc" style="transform: rotate(180deg)"></a>
+                    <a href='/books?sortBy=author&isDesc=true'><img src="/img/arrow.png" alt="asc"></a>
+                </th>
+                <th><span>Title</span>
+                    <a href='/books?sortBy=title'><img src="/img/arrow.png" alt="desc" style="transform: rotate(180deg)"></a>
+                    <a href='/books?sortBy=title&isDesc=true'><img src="/img/arrow.png" alt="asc"></a>
+                </th>
+                <th><span>Publish Year</span>
+                    <a href='/books?sortBy=year'><img src="/img/arrow.png" alt="desc" style="transform: rotate(180deg)"></a>
+                    <a href='/books?sortBy=year&isDesc=true'><img src="/img/arrow.png" alt="asc"></a>
+                </th>
                 <th></th>
 
             </tr>

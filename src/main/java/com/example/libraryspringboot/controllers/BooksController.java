@@ -9,6 +9,7 @@ import com.example.libraryspringboot.utils.BookValidator;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.sql.SQLException;
+import java.util.SortedMap;
 import java.util.stream.Collectors;
 
 @Controller
@@ -34,14 +36,43 @@ public class BooksController {
         this.modelMapper = modelMapper;
     }
 
+
+    //http://localhost:8080/books?page=1&books-per-page=3
+    //http://localhost:8080/books?page=1&books-per-page=3&sortBy=author
+    //http://localhost:8080/books?sortBy=author
     @GetMapping()// пустой, т.к. уже есть /пипл
-    public String index(Model model) throws SQLException { // в моделе будем передавать
+    public String index(Model model,
+                        @RequestParam(required = false) Integer page,
+                        @RequestParam(required = false, name = "books-per-page") Integer booksPerPage,
+                        @RequestParam(required = false) String sortBy,
+                        @RequestParam(required = false) boolean isDesc) throws SQLException { // в моделе будем передавать
         //получим всех людей из дао и передадим на отображение в вивью
-        model.addAttribute("books", bookService.findAll().stream()
-                .map(this::convertToBookDto)
-                .collect(Collectors.toList())); //под ключем пипл лежит список людей
+        if (page != null && booksPerPage != null && sortBy == null) {
+            model.addAttribute("books", bookService.getNBooksPerPage(page, booksPerPage).stream()
+                    .map(this::convertToBookDto)
+                    .collect(Collectors.toList()));
+        } else if (page != null && booksPerPage != null) {
+            model.addAttribute("books", bookService.getSortesBooksPerPage(page, booksPerPage, sortBy).stream()
+                    .map(this::convertToBookDto)
+                    .collect(Collectors.toList()));
+        } else if (page == null && booksPerPage == null && sortBy != null && isDesc) {
+            model.addAttribute("books", bookService.getDescSortedBooks(sortBy).stream()
+                    .map(this::convertToBookDto)
+                    .collect(Collectors.toList()));
+        } else if (page == null && booksPerPage == null && sortBy != null) {
+            model.addAttribute("books", bookService.getSortedBooks(sortBy).stream()
+                    .map(this::convertToBookDto)
+                    .collect(Collectors.toList()));
+        } else {
+            model.addAttribute("books", bookService.findAll().stream()
+                    .map(this::convertToBookDto)
+                    .collect(Collectors.toList()));
+        }
+
+
         return "books/index";//возвращаем страницу, отображающую список из людей
     }
+
 
     @GetMapping("/{id}") // в адресе передается число, которое поместиться в аргументы метода с пом анн ПасВариабл
     public String show(@PathVariable("id") int id, Model model,
