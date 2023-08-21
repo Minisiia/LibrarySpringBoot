@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -69,6 +70,7 @@ public class BookServiceImpl implements BookService {
 
     private void takeBook(Book book) {
         book.setTakenAt(LocalDateTime.now());
+        book.setReturnedAt(null);
     }
 
     private void returnBook(Book book) {
@@ -100,5 +102,23 @@ public class BookServiceImpl implements BookService {
 
     public int getTotalBooksCount() {
         return bookRepository.findAll().size();
+    }
+
+    public List<Book> findByTitleContains(String searchQuery) {
+        return bookRepository.findByTitleContains(searchQuery);
+    }
+
+    public boolean isBookExpired (Book book) {
+        LocalDateTime currentTime = LocalDateTime.now();
+        Duration duration = Duration.between(book.getTakenAt(),currentTime);
+        if (book.getReturnedAt() != null) {
+            System.out.println("book.getReturnedAt() != null");
+            return false;
+        } else if (duration.getSeconds()<30) {
+            System.out.println(duration.getSeconds());
+            return false;
+        }
+        System.out.println(duration.getSeconds());
+        return true;
     }
 }

@@ -44,3 +44,10 @@ INSERT INTO book (id, title, author, year, person_id, taken_at, returned_at) VAL
                                                           (110, 'The Catcher in the Rye', 'J.D. Salinger', 1951, 5, NOW(), NOW()),
                                                           (111, 'The Lord of the Rings', 'J.R.R. Tolkien', 1954, 6, NOW(), NOW()),
                                                           (112, 'The Hobbit', 'J.R.R. Tolkien', 1937, 6, NOW(), NOW());
+
+CREATE TABLE security (
+                          id int AUTO_INCREMENT PRIMARY KEY,
+                          username varchar(30) NOT NULL,
+                          password varchar(255),
+                          role VARCHAR(30)
+);

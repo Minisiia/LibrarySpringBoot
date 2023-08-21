@@ -9,7 +9,9 @@
 <div id="container">
     <div id="header">
         <div class="home-link">
-            <a href='/index.html' class="button-link">Home</a>
+            <a href='/templates/index.html' class="button-link">Home</a>
+
+            <a href="/books/search" class="button-link">Search Book</a>
         </div>
         <h1>Spring Boot Library</h1>
     </div>
@@ -65,7 +67,8 @@
             </tbody>
         </table>
         <!-- Навигация по страницам -->
-        <div id="navigation">
+        <div id="navigation" th:if="${currentPage}">
+            <p>Навигация по страницам</p>
             <ul>
                 <!-- Кнопка "Предыдущая страница" -->
                 <li th:unless="${currentPage == 0}">

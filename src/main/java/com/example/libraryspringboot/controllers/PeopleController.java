@@ -1,8 +1,10 @@
 package com.example.libraryspringboot.controllers;
 
+import com.example.libraryspringboot.models.Book;
 import com.example.libraryspringboot.models.Person;
+import com.example.libraryspringboot.services.impl.BookServiceImpl;
 import com.example.libraryspringboot.services.impl.PersonServiceImpl;
-import com.example.libraryspringboot.utils.PersonValidator;
+import com.example.libraryspringboot.validators.PersonValidator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,16 +13,20 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Controller
 @RequestMapping("/people") // все сслылки будут начинаться с пипл
 public class PeopleController {
     // внедрение класса дао в контроллер
     private final PersonServiceImpl personService;
-    private  final PersonValidator personValidator;
-@Autowired
-    public PeopleController(PersonServiceImpl personService, PersonValidator personValidator) {
+    private final BookServiceImpl bookService;
+    private final PersonValidator personValidator;
+
+    @Autowired
+    public PeopleController(PersonServiceImpl personService, BookServiceImpl bookService, PersonValidator personValidator) {
         this.personService = personService;
+        this.bookService = bookService;
         this.personValidator = personValidator;
     }
 
@@ -36,7 +42,14 @@ public class PeopleController {
     public String show(@PathVariable("id") int id, Model model) {
         //получим одного человека по айди из дао и передадим его на отображение в представление
         model.addAttribute("person", personService.findById(id)); //под этим ключем лежит человек по айди
-        model.addAttribute("books",personService.findById(id).getBookList());
+        List<Book> books = personService.findById(id).getBookList();
+
+        // Проверяем каждую книгу на просрочку и устанавливаем isExpired соответствующим образом
+        for (Book book : books) {
+            boolean flag = bookService.isBookExpired(book);
+            book.setExpired(flag);
+        }
+        model.addAttribute("books", books);
         return "people/show"; // возвращаем страницу с 1 человеком по айди
     }
 
@@ -48,7 +61,7 @@ public class PeopleController {
     @PostMapping()//попадаем в метод по адресу /пипл
     public String create(@ModelAttribute("person") @Valid Person person,
                          BindingResult bindingResult) {
-        personValidator.validate(person,bindingResult); // в полях передаем персон
+        personValidator.validate(person, bindingResult); // в полях передаем персон
         //из формы и bindingResult, где храняться ошибки со всех валидаций
 
         if (bindingResult.hasErrors())//если есть ошибки

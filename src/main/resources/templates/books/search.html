@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Search</title>
+    <link rel="stylesheet" type="text/css" href="/styles/style.css">
+</head>
+<body>
+<div id="container">
+    <div id="header">
+        <div class="home-link">
+            <a href='/templates/index.html' class="button-link">Home</a>
+        </div>
+        <h1>Spring Boot Library</h1>
+    </div>
+    <div id="search">
+        <h3>Search</h3>
+        <form th:method="POST" th:action="@{/books/search}">
+            <label for="search_query">Enter Title: </label>
+            <input type="text" th:value="${search_query}" id="search_query" name="search_query"/>
+            <br/>
+            <input type="submit" value="Search" class="button-link"/>
+        </form>
+
+    </div>
+    <div class="all-books">
+        <div th:if="${param.searchQuery != null && not #lists.isEmpty(books)}">
+            <table>
+                <h3>Book Info</h3>
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Author</th>
+                    <th>Title</th>
+                    <th>Publish Year</th>
+                    <th>Readers Info</th>
+                    <th></th>
+
+                </tr>
+                <tbody>
+                <tr th:each="book : ${books}">
+                    <td>
+                        <div th:if="${book.getPerson() == null}"><img src="/img/checkmark.png" alt="Free"></div>
+                        <div th:if="${book.getPerson() != null}"><img src="/img/cross.png" alt="Occupied"></div>
+                    </td>
+                    <td th:text="${book.getAuthor()}">Author</td>
+                    <td th:text="${book.getTitle()}">Title</td>
+                    <td th:text="${book.getYear()}">Year</td>
+                    <td>
+                        <div th:if="${book.getPerson() == null}">
+                            <p>Book not taken</p>
+
+                        </div>
+                        <div th:if="${book.getPerson() != null}">
+                            <p th:text="${book.getPerson().getName()}">Person</p>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="details">
+                            <a th:href="@{'/books/' + ${book.getId()}}" class="button-link">Details</a>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div th:if="${param.searchQuery != null && #lists.isEmpty(books)}" style="text-align: center;">
+            <p>Book not found</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

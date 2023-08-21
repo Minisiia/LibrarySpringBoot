@@ -9,7 +9,7 @@
 <div id="container">
     <div id="header">
         <div class="home-link">
-            <a href='/index.html'class="button-link">Home</a>
+            <a href='/templates/index.html' class="button-link">Home</a>
         </div>
         <div class="all-readers" >
             <a href='/people' class="button-link">All readers</a>
@@ -65,7 +65,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="book : ${books}">
+                <tr th:each="book : ${books}"  th:style="${book.isExpired ? 'color: red;' : 'color: black;'}">
                     <td th:text="${book.getAuthor()}">Author</td>
                     <td th:text="${book.getTitle()}">Title</td>
                     <td th:text="${book.getYear()}">Year</td>

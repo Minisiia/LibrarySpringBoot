@@ -33,4 +33,8 @@ public interface BookService {
     Page<Book> getDescSortesBooksPerPage(int pageNumber, int pageSize, String sortBy);
 
     int getTotalBooksCount();
+
+    List<Book> findByTitleContains(String searchQuery);
+
+    boolean isBookExpired (Book book);
 }

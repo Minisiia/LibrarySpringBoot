@@ -5,22 +5,21 @@ import com.example.libraryspringboot.models.Book;
 import com.example.libraryspringboot.models.Person;
 import com.example.libraryspringboot.services.impl.BookServiceImpl;
 import com.example.libraryspringboot.services.impl.PersonServiceImpl;
-import com.example.libraryspringboot.utils.BookValidator;
+import com.example.libraryspringboot.validators.BookValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.SortedMap;
 import java.util.stream.Collectors;
 
 @Controller
@@ -162,6 +161,22 @@ public class BooksController {
                            @ModelAttribute("person") Person person) {
         bookService.subscribe(id,person);// Ваш код обработки сохранения информации о читателе для книги
         return "redirect:/books/" + id; // Возвращаем URL для редиректа после сохранения
+    }
+
+    @GetMapping("/search")
+    public String search(@RequestParam(value = "searchQuery", required = false) String searchQuery,
+                         Model model) {
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            model.addAttribute("books", bookService.findByTitleContains(searchQuery));
+        }
+        return "books/search";
+    }
+
+    @PostMapping("/search")
+    public String searchResult(@RequestParam("search_query") String searchQuery,
+                               RedirectAttributes redirectAttributes) {
+        redirectAttributes.addAttribute("searchQuery", searchQuery);
+        return "redirect:/books/search";
     }
 
     private Book convertToBook(BookDto bookDTO) {

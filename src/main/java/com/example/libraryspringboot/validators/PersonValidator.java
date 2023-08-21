@@ -1,8 +1,7 @@
-package com.example.libraryspringboot.utils;
+package com.example.libraryspringboot.validators;
 
 import com.example.libraryspringboot.models.Person;
 import com.example.libraryspringboot.services.impl.PersonServiceImpl;
-import com.example.libraryspringboot.services.interfaces.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

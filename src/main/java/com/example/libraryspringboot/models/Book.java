@@ -38,4 +38,7 @@ public class Book {
     @Column(name = "returned_at")
     private LocalDateTime returnedAt;
 
+    @Transient
+    private boolean isExpired;
+
 }

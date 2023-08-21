@@ -1,4 +1,4 @@
-package com.example.libraryspringboot.utils;
+package com.example.libraryspringboot.validators;
 
 import com.example.libraryspringboot.models.Book;
 import com.example.libraryspringboot.services.impl.BookServiceImpl;
