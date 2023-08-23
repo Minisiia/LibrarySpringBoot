@@ -7,6 +7,7 @@ import com.example.libraryspringboot.services.impl.PersonServiceImpl;
 import com.example.libraryspringboot.validators.PersonValidator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,14 +31,15 @@ public class PeopleController {
         this.personValidator = personValidator;
     }
 
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping()// пустой, т.к. уже есть /пипл
     public String index(Model model) throws SQLException { // в моделе будем передавать
         //получим всех людей из дао и передадим на отображение в вивью
         model.addAttribute("people", personService.findAll()); //под ключем пипл лежит список людей
+        HomeController.authenticate(model);
         return "people/index";//возвращаем страницу, отображающую список из людей
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @GetMapping("/{id}") // в адресе передается число, которое поместиться в аргументы метода с пом анн ПасВариабл
     public String show(@PathVariable("id") int id, Model model) {
         //получим одного человека по айди из дао и передадим его на отображение в представление
@@ -50,14 +52,15 @@ public class PeopleController {
             book.setExpired(flag);
         }
         model.addAttribute("books", books);
+        HomeController.authenticate(model);
         return "people/show"; // возвращаем страницу с 1 человеком по айди
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @GetMapping("/new")
     public String newPerson(@ModelAttribute("person") Person person) {
         return "people/new";
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @PostMapping()//попадаем в метод по адресу /пипл
     public String create(@ModelAttribute("person") @Valid Person person,
                          BindingResult bindingResult) {
@@ -69,24 +72,22 @@ public class PeopleController {
         personService.save(person);
         return "redirect:/people";//переход на другую страницу после добавления человека
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
         model.addAttribute("person", personService.findById(id));
         return "people/edit";
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("person") @Valid Person person,
                          BindingResult bindingResult, @PathVariable("id") int id) {
-
-
         if (bindingResult.hasErrors())//если есть ошибки
             return "people/edit";
         personService.update(id, person);
-        return "redirect:/people";
+        return "redirect:/people/{id}";
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
         personService.delete(id);

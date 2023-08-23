@@ -9,7 +9,7 @@
 <div id="container">
     <div id="header">
         <div class="home-link" >
-            <a href='/templates/index.html' class="button-link">Home</a>
+            <a href='/index' class="button-link">Home</a>
         </div>
         <div class="all-books" >
             <a href='/books' class="button-link">All books</a>
@@ -24,7 +24,7 @@
                 <th>Author</th>
                 <th>Title</th>
                 <th>Publish Year</th>
-                <th></th>
+                <th th:if="${currentRole.equals('ROLE_ADMIN')}"></th>
 
             </tr>
             <tbody>
@@ -32,7 +32,7 @@
                 <td th:text="${book.getAuthor()}">Author</td>
                 <td th:text="${book.getTitle()}">Title</td>
                 <td th:text="${book.getYear()}">Year</td>
-                <td>
+                <td th:if="${currentRole.equals('ROLE_ADMIN')}">
                     <div class="edit">
                         <form th:method="GET" th:action="@{/books/{id}/edit(id=${book.getId()})}"
                               style="display: inline;">
@@ -54,7 +54,7 @@
         <h3>Readers Info</h3>
         <div th:if="${people}">
             <p>Book not taken</p>
-            <div>
+            <div  th:if="${currentRole.equals('ROLE_ADMIN')}">
                 <form th:method="PATCH" th:action="@{/books/{id}/subscribe(id=${book.getId()})}">
                     <label for="person">Choose a reader:</label>
                     <select th:object="${person}" th:field="*{id}" id="person">
@@ -68,17 +68,18 @@
         </div>
         <div th:if="${reader}">
             <span>The book is taken by </span>
-            <a th:href="@{'/people/' + ${reader.getId()}}">
+
+            <a th:href="@{'/people/' + ${reader.getId()}}"  th:if="${currentRole.equals('ROLE_ADMIN')}">
                 <span th:text="${reader.getName()}"> value</span>
             </a>
 
-            <div class="unsubscribe">
+            <span th:text="${reader.getName()}"  th:if="${currentRole.equals('ROLE_USER')}"> value</span>
+
+            <div class="unsubscribe"  th:if="${currentRole.equals('ROLE_ADMIN')}">
                 <form th:method="PATCH" th:action="@{/books/{id}/unsubscribe(id=${book.getId()})}" style="display: inline; margin-left: 5px;">
                     <button type="submit" class="button-link">Unsubscribe</button>
                 </form>
             </div>
-
-
         </div>
     </div>
 </div>

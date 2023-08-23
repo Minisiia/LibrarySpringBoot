@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Show</title>
+    <link rel="stylesheet" type="text/css" href="/styles/style.css">
 </head>
 <body>
+<div id="container">
+    <div id="header">
+        <h1>Spring Boot Library</h1>
+    </div>
 <p th:text="${user.getId() + ', ' + user.getUsername() + ', ' + user.getRole()}">VALUE</p>
 <br/>
 <hr/>
@@ -22,5 +27,6 @@
 <form th:action="@{/logout}" method="post">
     <input type="submit" value="Logout">
 </form>
+</div>
 </body>
 </html>

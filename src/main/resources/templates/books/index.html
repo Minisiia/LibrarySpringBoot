@@ -9,7 +9,7 @@
 <div id="container">
     <div id="header">
         <div class="home-link">
-            <a href='/templates/index.html' class="button-link">Home</a>
+            <a href='/index' class="button-link">Home</a>
 
             <a href="/books/search" class="button-link">Search Book</a>
         </div>
@@ -67,8 +67,7 @@
             </tbody>
         </table>
         <!-- Навигация по страницам -->
-        <div id="navigation" th:if="${currentPage}">
-            <p>Навигация по страницам</p>
+        <div id="navigation" >
             <ul>
                 <!-- Кнопка "Предыдущая страница" -->
                 <li th:unless="${currentPage == 0}">
@@ -83,7 +82,7 @@
             </ul>
         </div>
     </div>
-    <div class="create">
+    <div class="create"  th:if="${currentRole.equals('ROLE_ADMIN')}">
         <a href='/books/new' class="button-link">Create new book</a>
     </div>
 </div>

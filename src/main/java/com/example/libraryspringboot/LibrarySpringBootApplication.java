@@ -32,7 +32,7 @@ public class LibrarySpringBootApplication {
         // конфігуруємо авторизацію
         http.authorizeHttpRequests(requests -> requests
                         .requestMatchers("/admin").hasRole("ADMIN")
-                        .requestMatchers("/auth/login", "/auth/registration", "/error").permitAll()
+                        .requestMatchers("/auth/login", "/auth/registration", "/error","/styles/**").permitAll()
                         .anyRequest().hasAnyRole("USER", "ADMIN")
                 )
                 .formLogin(form -> form

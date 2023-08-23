@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -42,6 +43,7 @@ public class BooksController {
     //http://localhost:8080/books?page=1&books-per-page=3
     //http://localhost:8080/books?page=1&books-per-page=3&sortBy=author
     //http://localhost:8080/books?sortBy=author
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @GetMapping()// пустой, т.к. уже есть /пипл
     public String index(Model model,
                         @RequestParam(required = false) Integer page,
@@ -54,7 +56,6 @@ public class BooksController {
         model.addAttribute("link_builder",buildLink(request));
 
         int totalPages = getTotalPages(booksPerPage);
-
 
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", totalPages);
@@ -78,12 +79,14 @@ public class BooksController {
         } else {
             model.addAttribute("books", convertToBookDtoList(bookService.findAll()));
         }
+
+        HomeController.authenticate(model);
         return "books/index";//возвращаем страницу, отображающую список из людей
     }
 
 
 
-
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @GetMapping("/{id}") // в адресе передается число, которое поместиться в аргументы метода с пом анн ПасВариабл
     public String show(@PathVariable("id") int id, Model model,
                        @ModelAttribute("person") Person person) {
@@ -96,14 +99,16 @@ public class BooksController {
         } else {
             model.addAttribute("people", personService.findAll());
         }
+
+        HomeController.authenticate(model);
         return "books/show"; // возвращаем страницу с 1 человеком по айди
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/new")
     public String newPerson(@ModelAttribute("book") BookDto book) {
         return "books/new";
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping()//попадаем в метод по адресу /пипл
     public String create(@ModelAttribute("book") @Valid BookDto book,
                          BindingResult bindingResult) {
@@ -115,14 +120,14 @@ public class BooksController {
         bookService.save(convertToBook(book));
         return "redirect:/books";//переход на другую страницу после добавления человека
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/{id}/edit")
     public String edit(Model model, @PathVariable("id") int id) {
         model.addAttribute("book", convertToBookDto(bookService.findById(id)));
         return "books/edit";
     }
 
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping("/{id}")
     public String update(@ModelAttribute("book") @Valid BookDto book,
                          BindingResult bindingResult, @PathVariable("id") int id) {
@@ -133,21 +138,21 @@ public class BooksController {
         bookService.update(id, convertToBook(book));
         return "redirect:/books";
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id) {
         bookService.delete(id);
         return "redirect:/books";
 
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping("/{id}/unsubscribe")
     public String unsubscribe(Model model, @PathVariable("id") int id) {
         bookService.unsubscribe(id);
         model.addAttribute("book", convertToBookDto(bookService.findById(id)));
         return "redirect:/books/" + id;
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping("/{id}/unsubscribe-from-person-page")
     public String unsubscribeFromPersonPage(Model model, @PathVariable("id") int id) {
         int personId = bookService.findById(id).getPerson().getId();
@@ -155,14 +160,14 @@ public class BooksController {
         model.addAttribute("book", convertToBookDto(bookService.findById(id)));
         return "redirect:/people/" + personId;
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping("/{id}/subscribe")
     public String takeBook(@PathVariable("id") int id,
                            @ModelAttribute("person") Person person) {
         bookService.subscribe(id,person);// Ваш код обработки сохранения информации о читателе для книги
         return "redirect:/books/" + id; // Возвращаем URL для редиректа после сохранения
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @GetMapping("/search")
     public String search(@RequestParam(value = "searchQuery", required = false) String searchQuery,
                          Model model) {
@@ -171,7 +176,7 @@ public class BooksController {
         }
         return "books/search";
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     @PostMapping("/search")
     public String searchResult(@RequestParam("search_query") String searchQuery,
                                RedirectAttributes redirectAttributes) {

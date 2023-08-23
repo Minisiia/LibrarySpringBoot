@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Login page</title>
+    <link rel="stylesheet" type="text/css" href="/styles/style.css">
 </head>
 <body>
-
+<div id="container">
+    <div id="header">
+        <h1>Spring Boot Library</h1>
+    </div>
 <div th:if="${param.error}">
     Invalid username and password.
 </div>
@@ -35,9 +39,7 @@
 <!--</form>-->
 <br/>
 <br/>
-<a href="/auth/registration">Registration</a>
-<br/>
-<br/>
-<a href="/">Hello page</a>
+<a href="/auth/registration" class="button-link">Registration</a>
+</div>
 </body>
 </html>

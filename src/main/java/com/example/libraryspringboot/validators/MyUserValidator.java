@@ -1,4 +1,4 @@
-package com.example.libraryspringboot.util;
+package com.example.libraryspringboot.validators;
 
 import com.example.libraryspringboot.models.User;
 import com.example.libraryspringboot.services.MyUserDetailsService;

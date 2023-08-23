@@ -2,7 +2,7 @@ package com.example.libraryspringboot.controllers;
 
 import com.example.libraryspringboot.models.User;
 import com.example.libraryspringboot.services.RegistrationService;
-import com.example.libraryspringboot.util.MyUserValidator;
+import com.example.libraryspringboot.validators.MyUserValidator;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

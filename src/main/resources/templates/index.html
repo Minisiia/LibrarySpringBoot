@@ -11,18 +11,20 @@
         <h1>Spring Boot Library</h1>
     </div>
     <div id="readers-info">
-        <a href="/people" class="button-link">People</a>
-
+        <span  th:if="${currentRole.equals('ROLE_ADMIN')}">
+             <a href="/admin/index" class="button-link">Admin page</a>
+            <a href="/people" class="button-link">Readers</a>
+        </span>
+        <span  th:if="${currentRole.equals('ROLE_USER')}">
+            <a th:href="@{/people/{id}(id=${myUser.getId()})}" class="button-link">My Account</a>
+        </span>
         <a href="/books" class="button-link">Books</a>
 
         <a href="/books/search" class="button-link">Search Book</a>
     </div>
-    <div>
-        <a href="/admin/index" class="button-link">Admin page</a>
-        <br/>
-    </div>
+
     <br/>
-    <h1 th:inline="text">Hello <span >thymeleaf</span>!</h1>
+    <h1 th:inline="text">Hello <span th:text="${myUser.getUsername()}">thymeleaf</span>!</h1>
 
     <form th:action="@{/logout}" method="post">
 <!--        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->

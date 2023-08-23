@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Admin page</title>
+    <link rel="stylesheet" type="text/css" href="/styles/style.css">
 </head>
 <body>
+<div id="container">
+    <div id="header">
+        <h1>Spring Boot Library</h1>
+    </div>
 <div>
     <h3>All users</h3>
     <div th:each="user : ${usersList}">
@@ -21,6 +26,6 @@
 <form th:action="@{/logout}" method="post">
     <input type="submit" value="Logout">
 </form>
-
+</div>
 </body>
 </html>

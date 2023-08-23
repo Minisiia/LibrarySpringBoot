@@ -9,9 +9,9 @@
 <div id="container">
     <div id="header">
         <div class="home-link">
-            <a href='/templates/index.html' class="button-link">Home</a>
+            <a href='/index' class="button-link">Home</a>
         </div>
-        <div class="all-readers" >
+        <div class="all-readers"  th:if="${currentRole.equals('ROLE_ADMIN')}" >
             <a href='/people' class="button-link">All readers</a>
         </div>
         <h1>Spring Boot Library</h1>
@@ -39,7 +39,7 @@
                             <button type="submit" class="button-link">Edit</button>
                         </form>
                     </div>
-                    <div class="delete">
+                    <div class="delete" th:if="${currentRole.equals('ROLE_ADMIN')}">
                         <form th:method="DELETE" th:action="@{/people/{id}(id=${person.getId()})}" style="display: inline; margin-left: 5px;">
                             <button type="submit" class="button-link">Delete</button>
                         </form>
@@ -73,7 +73,7 @@
                         <div class="details">
                             <a th:href="@{'/books/' + ${book.getId()}}" class="button-link">Details</a>
                         </div>
-                        <div class="unsubscribe">
+                        <div class="unsubscribe"  th:if="${currentRole.equals('ROLE_ADMIN')}">
                             <form th:method="PATCH" th:action="@{/books/{id}/unsubscribe-from-person-page(id=${book.getId()})}" style="display: inline; margin-left: 5px;">
                                 <button type="submit" class="button-link">Unsubscribe</button>
                             </form>
