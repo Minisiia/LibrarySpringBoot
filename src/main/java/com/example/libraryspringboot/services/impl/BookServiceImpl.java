@@ -3,7 +3,6 @@ package com.example.libraryspringboot.services.impl;
 import com.example.libraryspringboot.models.Book;
 import com.example.libraryspringboot.models.Person;
 import com.example.libraryspringboot.repositories.BookRepository;
-import com.example.libraryspringboot.repositories.PersonRepository;
 import com.example.libraryspringboot.services.interfaces.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 

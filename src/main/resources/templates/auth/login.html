@@ -11,10 +11,10 @@
         <h1>Spring Boot Library</h1>
     </div>
     <div th:if="${param.error}" class="errors">
-        Invalid username and password.
+        Invalid username and password
     </div>
     <div th:if="${param.logout}" class="errors">
-        You have been logged out.
+        You have been logged out
     </div>
     <div class="form-design">
         <form th:action="@{/process_login}" method="post">

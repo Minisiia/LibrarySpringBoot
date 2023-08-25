@@ -220,8 +220,6 @@ public class BooksController {
             }
             else linkBuilder.append("?").append(queryString).append("&");
         } else linkBuilder.append("?");
-
-        System.out.println(linkBuilder.toString());
         // Возвращаем сформированную ссылку
         return linkBuilder.toString();
     }

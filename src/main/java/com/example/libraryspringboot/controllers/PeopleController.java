@@ -19,7 +19,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/people") // все сслылки будут начинаться с пипл
 public class PeopleController {
-    // внедрение класса дао в контроллер
     private final PersonServiceImpl personService;
     private final BookServiceImpl bookService;
     private final PersonValidator personValidator;

@@ -14,31 +14,32 @@ import java.util.Optional;
 @Transactional
 public class PersonServiceImpl implements PersonService {
     private final PersonRepository personRepository;
-@Autowired
+
+    @Autowired
     public PersonServiceImpl(PersonRepository personRepository) {
         this.personRepository = personRepository;
     }
 
     public List<Person> findAll() {
-    return personRepository.findAll();
+        return personRepository.findAll();
     }
 
     public Person findById(int id) {
         Optional<Person> foundPerson = personRepository.findById(id);
-    return foundPerson.orElse(null);
+        return foundPerson.orElse(null);
     }
 
     public Person save(Person person) {
-    return personRepository.save(person);
+        return personRepository.save(person);
     }
 
-    public Person update (int id, Person updatedPerson) {
-    Person person = personRepository.findById(id).orElseThrow();
-    updatedPerson.setId(person.getId());
-    return personRepository.save(updatedPerson);
+    public Person update(int id, Person updatedPerson) {
+        Person person = personRepository.findById(id).orElseThrow();
+        updatedPerson.setId(person.getId());
+        return personRepository.save(updatedPerson);
     }
 
-    public void delete (int id) {
-    personRepository.deleteById(id);
+    public void delete(int id) {
+        personRepository.deleteById(id);
     }
 }

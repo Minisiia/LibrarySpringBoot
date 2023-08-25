@@ -4,7 +4,6 @@ import com.example.libraryspringboot.models.Person;
 import com.example.libraryspringboot.models.User;
 import com.example.libraryspringboot.services.RegistrationService;
 import com.example.libraryspringboot.services.impl.PersonServiceImpl;
-import com.example.libraryspringboot.services.interfaces.PersonService;
 import com.example.libraryspringboot.validators.MyUserValidator;
 import com.example.libraryspringboot.validators.PersonValidator;
 import jakarta.validation.Valid;
@@ -55,6 +54,7 @@ public class AuthController {
 
         if (bindingResult.hasErrors())
             return "/auth/registration";
+
         personService.save(person);
         user.setPerson(person);
         registrationService.register(user);
