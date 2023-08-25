@@ -29,8 +29,9 @@ public class Person {
     @Max(value = 2023, message = "Year of birth should be less than 2023")
     private int year;
     @OneToMany (mappedBy = "person", fetch = FetchType.EAGER)
-    //@JoinColumn(name = "person_id")
     private List<Book> bookList;
+    @OneToOne(mappedBy = "person", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private User user;
 
 }
 

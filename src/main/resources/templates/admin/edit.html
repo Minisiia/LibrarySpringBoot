@@ -7,29 +7,43 @@
 </head>
 <body>
 <div id="container">
+    <div id="logout">
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Logout">
+        </form>
+    </div>
     <div id="header">
+        <div class="home-link">
+            <a href='/index' class="button-link">Home</a>
+        </div>
+        <div class="home-link">
+            <a href='/admin' class="button-link">Admin Home</a>
+        </div>
         <h1>Spring Boot Library</h1>
     </div>
-<form th:method="patch" th:action="@{/admin/{id}(id=${user.getId()})}" th:object="${user}">
-    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
-    <label for="username">Enter username: </label>
-    <input type="text" th:field="*{username}" id="username"/>
-    <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username Error</div>
-    <br/>
-    <label for="role">Enter role: </label>
-    <input type="text" th:field="*{role}" id="role"/>
-    <div style="color:red" th:if="${#fields.hasErrors('role')}" th:errors="*{role}">role Error</div>
-    <br/>
-    <input type="submit" value="Update!"/>
-</form>
-
-<br/>
-<a href="/">Back to hello page</a>
-<br/>
-<hr/>
-<form th:action="@{/logout}" method="post">
-    <input type="submit" value="Logout">
-</form>
+    <div id="readers-info-update">
+        <h3>Update Reader Info</h3>
+        <div class="form-design">
+            <form th:method="patch" th:action="@{/admin/{id}(id=${user.getId()})}" th:object="${user}">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                <label for="username">Enter username: </label>
+                <input type="text" th:field="*{username}" id="username"/>
+                <div style="color:red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">username Error
+                </div>
+                <br/>
+                <label for="role">Choose a role: </label>
+                <select th:field="*{role}" id="role">
+                    <option value="ROLE_USER">ROLE_USER</option>
+                    <option value="ROLE_ADMIN">ROLE_ADMIN</option>
+                </select>
+<!--                <input type="text" th:field="*{role}" id="role"/>-->
+<!--                <div style="color:red" th:if="${#fields.hasErrors('role')}" th:errors="*{role}">role Error</div>-->
+                <br/>
+                <br/>
+                <input type="submit" value="Update!"/>
+            </form>
+        </div>
+    </div>
 </div>
 </body>
 </html>

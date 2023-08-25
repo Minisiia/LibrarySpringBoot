@@ -7,6 +7,11 @@
 </head>
 <body>
 <div id="container">
+    <div id="logout">
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Logout">
+        </form>
+    </div>
     <div id="header">
         <div class="home-link">
             <a href='/index' class="button-link">Home</a>

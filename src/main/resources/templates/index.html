@@ -7,6 +7,11 @@
 </head>
 <body>
 <div id="container">
+    <div id="logout">
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Logout">
+        </form>
+    </div>
     <div id="header">
         <h1>Spring Boot Library</h1>
     </div>
@@ -24,12 +29,9 @@
     </div>
 
     <br/>
-    <h1 th:inline="text">Hello <span th:text="${myUser.getUsername()}">thymeleaf</span>!</h1>
+    <h1 th:inline="text">Hi, <span th:text="${myUser.getPerson().getName()}">name</span>!</h1>
 
-    <form th:action="@{/logout}" method="post">
-<!--        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
-        <input type="submit" value="Sign Out"/>
-    </form>
+
 
 </div>
 

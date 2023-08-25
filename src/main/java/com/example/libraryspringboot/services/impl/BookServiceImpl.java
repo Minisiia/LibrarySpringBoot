@@ -110,15 +110,19 @@ public class BookServiceImpl implements BookService {
 
     public boolean isBookExpired (Book book) {
         LocalDateTime currentTime = LocalDateTime.now();
-        Duration duration = Duration.between(book.getTakenAt(),currentTime);
-        if (book.getReturnedAt() != null) {
-            System.out.println("book.getReturnedAt() != null");
-            return false;
-        } else if (duration.getSeconds()<30) {
+        if (book.getTakenAt() != null) {
+            Duration duration = Duration.between(book.getTakenAt(), currentTime);
+            if (book.getReturnedAt() != null) {
+                System.out.println("book.getReturnedAt() != null");
+                return false;
+            } else if (duration.getSeconds() < 30) {
+                System.out.println(duration.getSeconds());
+                return false;
+            }
+
             System.out.println(duration.getSeconds());
-            return false;
+            return true;
         }
-        System.out.println(duration.getSeconds());
-        return true;
+        return false;
     }
 }

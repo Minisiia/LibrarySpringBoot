@@ -7,6 +7,11 @@
 </head>
 <body>
 <div id="container">
+    <div id="logout">
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Logout">
+        </form>
+    </div>
     <div id="header">
         <div class="home-link">
             <a href='/index' class="button-link">Home</a>
@@ -16,21 +21,23 @@
 
     <div id="create-new-book">
         <h3>Create new book</h3>
-        <form th:method="POST" th:action="@{/books}" th:object="${book}">
-            <label for="author">Enter Author: </label>
-            <input type="text" th:field="*{author}" id="author"/>
-            <div style="color:darkred" th:if="${#fields.hasErrors('author')}" th:errors="*{author}">Name error</div>
-            <br/>
-            <label for="title">Enter Title: </label>
-            <input type="text" th:field="*{title}" id="title"/>
-            <div style="color:darkred" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Name error</div>
-            <br/>
-            <label for="year">Enter year: </label>
-            <input type="text" th:field="*{year}" id="year"/>
-            <div style="color:darkred" th:if="${#fields.hasErrors('year')}" th:errors="*{year}">Name error</div>
-            <br/>
-            <input type="submit" value="Create" class="button-link"/>
-        </form>
+        <div class="form-design">
+            <form th:method="POST" th:action="@{/books}" th:object="${book}">
+                <label for="author">Enter Author: </label>
+                <input type="text" th:field="*{author}" id="author"/>
+                <div style="color:darkred" th:if="${#fields.hasErrors('author')}" th:errors="*{author}">Name error</div>
+                <br/>
+                <label for="title">Enter Title: </label>
+                <input type="text" th:field="*{title}" id="title"/>
+                <div style="color:darkred" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">Name error</div>
+                <br/>
+                <label for="year">Enter year: </label>
+                <input type="text" th:field="*{year}" id="year"/>
+                <div style="color:darkred" th:if="${#fields.hasErrors('year')}" th:errors="*{year}">Name error</div>
+                <br/>
+                <input type="submit" value="Create" class="button-link"/>
+            </form>
+        </div>
     </div>
 </div>
 </body>

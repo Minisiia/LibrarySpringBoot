@@ -24,5 +24,8 @@ public class User {
     @Column(name = "role")
     private String role;
 
+    @OneToOne
+    @JoinColumn(name = "person_id",referencedColumnName = "id")
+    private Person person;
 
 }

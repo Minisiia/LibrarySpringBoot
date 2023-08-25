@@ -13,6 +13,11 @@
 
             <a href="/books/search" class="button-link">Search Book</a>
         </div>
+        <div id="logout">
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" value="Logout">
+            </form>
+        </div>
         <h1>Spring Boot Library</h1>
     </div>
     <div id="books-info">
@@ -22,7 +27,8 @@
                 <span>Books on page </span>
                 <span>  <a th:href="@{${httpServletRequestPaging.requestURI}(page=0, books-per-page=3)}">3</a>  </span>
                 <span>  <a th:href="@{${httpServletRequestPaging.requestURI}(page=0, books-per-page=5)}">5</a>  </span>
-                <span>  <a th:href="@{${httpServletRequestPaging.requestURI}(page=0, books-per-page=10)}">10</a>  </span>
+                <span>  <a
+                        th:href="@{${httpServletRequestPaging.requestURI}(page=0, books-per-page=10)}">10</a>  </span>
             </div>
             <thead>
             <tr>
@@ -31,19 +37,22 @@
                     <span>Author</span>
                     <a th:href="@{${link_builder} + 'sortBy=author'}">
                         <img src="/img/arrow.png" alt="asc" style="transform: rotate(180deg)"></a>
-                    <a th:href="@{${link_builder} + 'sortBy=author' + '&isDesc=true'}"><img src="/img/arrow.png" alt="desc"></a>
+                    <a th:href="@{${link_builder} + 'sortBy=author' + '&isDesc=true'}"><img src="/img/arrow.png"
+                                                                                            alt="desc"></a>
                 </th>
                 <th>
                     <span>Title</span>
                     <a th:href="@{${link_builder} + 'sortBy=title'}"><img src="/img/arrow.png" alt="asc"
-                                                                                   style="transform: rotate(180deg)"></a>
-                    <a th:href="@{${link_builder} + 'sortBy=title' + '&isDesc=true'}"><img src="/img/arrow.png" alt="desc"></a>
+                                                                          style="transform: rotate(180deg)"></a>
+                    <a th:href="@{${link_builder} + 'sortBy=title' + '&isDesc=true'}"><img src="/img/arrow.png"
+                                                                                           alt="desc"></a>
                 </th>
                 <th>
                     <span>Publish Year</span>
                     <a th:href="@{${link_builder} + 'sortBy=year'}"><img src="/img/arrow.png" alt="asc"
-                                                                                  style="transform: rotate(180deg)"></a>
-                    <a th:href="@{${link_builder} + 'sortBy=year' + '&isDesc=true'}"><img src="/img/arrow.png" alt="desc"></a>
+                                                                         style="transform: rotate(180deg)"></a>
+                    <a th:href="@{${link_builder} + 'sortBy=year' + '&isDesc=true'}"><img src="/img/arrow.png"
+                                                                                          alt="desc"></a>
                 </th>
                 <th></th>
             </tr>
@@ -67,7 +76,7 @@
             </tbody>
         </table>
         <!-- Навигация по страницам -->
-        <div id="navigation" >
+        <div id="navigation" th:if="${currentPage != null}">
             <ul>
                 <!-- Кнопка "Предыдущая страница" -->
                 <li th:unless="${currentPage == 0}">
@@ -82,7 +91,7 @@
             </ul>
         </div>
     </div>
-    <div class="create"  th:if="${currentRole.equals('ROLE_ADMIN')}">
+    <div class="create" th:if="${currentRole.equals('ROLE_ADMIN')}">
         <a href='/books/new' class="button-link">Create new book</a>
     </div>
 </div>

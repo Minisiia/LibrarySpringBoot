@@ -15,6 +15,18 @@ body, html {
     line-height: 18px;
     text-align: left;
     height: 100%;
+    position: relative;
+
+}
+
+
+#logout {
+    width: max-content;
+    position: absolute; /* Позиционирование абсолютным */
+    top: 0; /* Располагаем сверху */
+    right: 0; /* Располагаем справа */
+    color: #fff; /* Цвет текста */
+    padding: 5px 10px; /* Внутренние отступы */
 }
 
 #readers-info {
@@ -107,20 +119,20 @@ a:visited {
 }
 
 /* Стили для формы */
-form {
+.form-design form {
     width: 400px; /* Ширина формы (можете установить нужное значение) */
     margin: 0 auto; /* Размещение формы по центру */
 }
 
 /* Стили для названий полей */
-form label {
+.form-design form label {
     display: block;
     margin-bottom: 5px; /* Расстояние между названием и полем ввода */
     font-weight: bold; /* Жирное начертание для названий полей */
 }
 
 /* Стили для каждого элемента формы */
-form input {
+.form-design form input {
     display: block;
     width: 100%; /* Ширина элементов формы на 100% контейнера (формы) */
     margin-bottom: 15px; /* Расстояние между элементами */
@@ -128,6 +140,18 @@ form input {
     font-size: 16px; /* Размер шрифта */
     border: 1px solid #ccc; /* Граница для полей ввода */
     border-radius: 5px; /* Скругление углов */
+}
+
+form input[type="submit"] {
+    background-color: #ff5733; /* Другой цвет фона для кнопки submit */
+    color: #fff; /* Цвет текста */
+    border: none; /* Убираем границу */
+    padding: 12px 24px; /* Отступы вокруг текста */
+    border-radius: 8px; /* Закругляем углы */
+    cursor: pointer; /* Изменяем указатель при наведении */
+    width: max-content;
+    font-size: 14px;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
 }
 
 /* Стили для ошибок */
@@ -154,4 +178,20 @@ img {
 
 #navigation li:last-child {
     margin-right: 0; /* Убираем правый margin у последнего элемента */
+}
+
+.logout form {
+    background-color: #56c7e8;
+    color: white;
+    border: 2px solid #56c7e8;
+    padding: 6px 16px;
+    font-size: 14px;
+    cursor: pointer; /* При наведении курсор меняется на указатель */
+    border-radius: 5px;
+    text-decoration-line: none;
+}
+
+.errors {
+    color: darkred;
+    text-align: center;
 }

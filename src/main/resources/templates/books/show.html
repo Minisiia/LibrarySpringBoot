@@ -7,6 +7,11 @@
 </head>
 <body>
 <div id="container">
+    <div id="logout">
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Logout">
+        </form>
+    </div>
     <div id="header">
         <div class="home-link" >
             <a href='/index' class="button-link">Home</a>
@@ -62,7 +67,6 @@
                                 th:text="${person.getName()}"></option>
                     </select>
                     <input type="submit" value="Subscribe" class="button-link" style="display: inline; margin: 5px; width: auto;"/>
-
                 </form>
             </div>
         </div>

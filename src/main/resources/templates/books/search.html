@@ -7,6 +7,11 @@
 </head>
 <body>
 <div id="container">
+    <div id="logout">
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Logout">
+        </form>
+    </div>
     <div id="header">
         <div class="home-link">
             <a href='/index' class="button-link">Home</a>
@@ -15,13 +20,14 @@
     </div>
     <div id="search">
         <h3>Search</h3>
-        <form th:method="POST" th:action="@{/books/search}">
-            <label for="search_query">Enter Title: </label>
-            <input type="text" th:value="${search_query}" id="search_query" name="search_query"/>
-            <br/>
-            <input type="submit" value="Search" class="button-link"/>
-        </form>
-
+        <div class="form-design">
+            <form th:method="POST" th:action="@{/books/search}">
+                <label for="search_query">Enter Title: </label>
+                <input type="text" th:value="${search_query}" id="search_query" name="search_query"/>
+                <br/>
+                <input type="submit" value="Search" class="button-link"/>
+            </form>
+        </div>
     </div>
     <div class="all-books">
         <div th:if="${param.searchQuery != null && not #lists.isEmpty(books)}">
