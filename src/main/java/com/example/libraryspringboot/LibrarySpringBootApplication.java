@@ -28,7 +28,9 @@ public class LibrarySpringBootApplication {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         // конфігуруємо сам Spring Security
         // конфігуруємо авторизацію
-        http.authorizeHttpRequests(requests -> requests
+        http
+              //  .authenticationProvider(CaseSensitiveAuthenticationProvider::new)
+                .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/auth/login", "/auth/registration", "/error","/styles/**").permitAll()
                         .anyRequest().hasAnyRole("USER", "ADMIN")
