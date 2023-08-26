@@ -26,7 +26,6 @@ public class PersonValidator implements Validator {
     @Override
     public void validate(Object o, Errors errors) {
         Person person = (Person) o;
-// посмотреть есть ли в бд человек с таким емейл
         if (personService.findById(person.getId())!= null)// нашли ли мы человека в таблице
             errors.rejectValue("name", "", "This person is already taken");
     }

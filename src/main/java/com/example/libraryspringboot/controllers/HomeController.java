@@ -24,14 +24,9 @@ public class HomeController {
 
     public static void authenticate(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        if (authentication.getPrincipal().toString().equals("anonymousUser")) {
-//            model.addAttribute("currentRole", "ROLE_ANONYMOUS");
-//            model.addAttribute("userName", "ANONYMOUS");
-//        } else {
             MyUserDetails personDetails = (MyUserDetails) authentication.getPrincipal();
             User user = personDetails.getUser();
             model.addAttribute("currentRole", user.getRole());
             model.addAttribute("myUser", user);
-//        }
     }
 }

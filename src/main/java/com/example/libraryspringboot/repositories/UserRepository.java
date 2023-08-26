@@ -9,6 +9,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User,Integer> {
+
+    //Использование функции BINARY для преобразования значения в двоичную строку является одним из способов принудительного сравнения строк по байтам, а не посимвольного сравнения.
     @Query(value = "SELECT * FROM security WHERE BINARY username = :username", nativeQuery = true)
     Optional<User> findByUsername(@Param("username") String username);
 }

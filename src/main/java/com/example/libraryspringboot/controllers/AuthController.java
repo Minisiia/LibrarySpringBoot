@@ -47,14 +47,14 @@ public class AuthController {
 
     @PostMapping("/registration")
     public String performRegistration(@ModelAttribute("user") @Valid User user,
+                                      BindingResult userBindingResult,
                                       @ModelAttribute("person") @Valid Person person,
-                                      BindingResult bindingResult) {
-        myUserValidator.validate(user, bindingResult);
-        personValidator.validate(person, bindingResult);
-
-        if (bindingResult.hasErrors())
+                                      BindingResult personBindingResult) {
+        myUserValidator.validate(user, userBindingResult);
+        personValidator.validate(person, personBindingResult);
+        if (userBindingResult.hasErrors() || personBindingResult.hasErrors()) {
             return "/auth/registration";
-
+        }
         personService.save(person);
         user.setPerson(person);
         registrationService.register(user);
